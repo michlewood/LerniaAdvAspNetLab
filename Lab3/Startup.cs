@@ -35,6 +35,7 @@ namespace Lab3
             }
 
             app.UseMvc();
+            app.UseStaticFiles();
         }
     }
 }

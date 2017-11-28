@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lab3.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Lab3")]
     public class ValuesController : Controller
     {
         // GET api/values
