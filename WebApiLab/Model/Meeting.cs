@@ -7,6 +7,7 @@ namespace WebApiLab.Model
 {
     public class Meeting
     {
+
         public string People { get; set; }
         public string Location { get; set; }
     }
