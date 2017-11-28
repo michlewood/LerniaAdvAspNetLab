@@ -6,7 +6,7 @@
 </head>
 <body>
     <form method="get" action="lab3/lamp">
-        <input type="checkbox" name="lampIsOn" value="true">
+        <input type="checkbox" onclick="submit()" name="lampIsOn" value="true">
         <div>Slå på lampa</div>
         <input type="submit" value="Ljust eller mörkt" />
     </form>
@@ -15,7 +15,7 @@
 
     <form method="get" action="lab3/chocolate">
         <div>Antal personer</div>
-        <input type="text" name="nrOfPeople">
+        <input type="number" name="nrOfPeople">
         <input type="submit" value="beräkna" />
     </form>
 
@@ -25,6 +25,13 @@
         <div>Ordernummer</div>
         <input type="text" name="orderNumber">
         <input type="submit" value="Slå upp order" />
+    </form>
+
+    <br /><hr /><br />
+
+    <form method="get" action="lab3/order2">
+        <div>Ordernummer</div>
+        <input type="submit" value="orders from text file" />
     </form>
 
     <br /><hr /><br />

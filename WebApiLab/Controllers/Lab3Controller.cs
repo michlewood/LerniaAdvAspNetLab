@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -41,15 +42,16 @@ namespace WebApiLab.Controllers
 
             else
             {
-                int amountOfChocolate = 25;
-                int chocolatePerPerson = amountOfChocolate / nrOfPeople;
-                return Ok(chocolatePerPerson); 
+                double amountOfChocolate = 25;
+                double chocolatePerPerson = amountOfChocolate / nrOfPeople;
+                return Ok($"{chocolatePerPerson:.00}"); 
             }
         }
 
         [HttpGet, Route("order")]
         public IActionResult Order(string orderNumber)
         {
+            Match match = Regex.Match(orderNumber, @"^[A-Z]{2}-(d{4})", RegexOptions.IgnoreCase);
 
             if (!(orderNumber.Length.Equals(7)) || !(orderNumber.ElementAt(2) == '-') 
                 || !(int.TryParse(orderNumber.Substring(3), out int number)) 
@@ -67,7 +69,60 @@ namespace WebApiLab.Controllers
             }
         }
 
-       
+        [HttpGet, Route("order2")]
+        public IActionResult Order2()
+        {
+            string[] lines = System.IO.File.ReadAllLines(@"C:\Users\michl\Documents\orders.txt");
+            bool[] boolList = new bool[lines.Length];
+
+            string contentString = "";
+
+            foreach (string line in lines)
+            {
+                string text = line.Substring(7);
+                text = text.Trim();
+                if (CheckOrder2(line.Substring(0, 7))) contentString += $"Order {line.Substring(0, 7)} {text.Trim()} \n";
+                else contentString += "invalid order \n";
+            }
+            return Ok(contentString);
+        }
+
+        public string CheckOrder(string orderNumber)
+        {
+            Match match = Regex.Match(orderNumber, @"^[A-Z]{2}-(d{4})", RegexOptions.IgnoreCase);
+            if (match.Success)
+            {
+                return "Bad Request!";
+            }
+            else if (int.Parse(orderNumber.Substring(3,4)) > 3000)
+            {
+                return"Not Found!";
+            }
+            else
+            {
+                return $"Order {orderNumber.ToUpper()} hittades i databasen";
+            }
+        }
+
+        public bool CheckOrder2(string orderNumber)
+        {
+
+            Match match = Regex.Match(orderNumber, @"^[A-Z]{2}-(d{4})", RegexOptions.IgnoreCase);
+            if (match.Success)
+            {
+                return false;
+            }
+            else if (int.Parse(orderNumber.Substring(3, 4)) > 3000)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
 
         [HttpGet, Route("users")]
         public IActionResult Users(string username)
